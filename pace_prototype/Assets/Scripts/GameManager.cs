@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _goodFish;
     [SerializeField] private GameObject _badFish;
     
-    private bool onMove = false;
     public float rotTime = 2f;
     public float delayTime = 0;
 
@@ -26,11 +25,7 @@ public class GameManager : MonoBehaviour
     private string displayText;
 
     private int count = 0;
-
-    private void Start()
-    {
-        
-    }
+    
 
     private GameObject leftArrow;
     private void Update()
@@ -39,9 +34,6 @@ public class GameManager : MonoBehaviour
         {
             angle = angleNum;
             Invoke("RotateRod",delayTime);
-            
-            
-            
             //RotateRod();
         }
 
@@ -128,10 +120,14 @@ public class GameManager : MonoBehaviour
     {
         
         _rod.RotateAround(new Vector3(7.3f,-0.37f),new Vector3(0,0,1),angle);
-        if (transform.rotation.z >= 63)
-        {
-            return;
-        }
+        
+        // Quaternion q = _rod.transform.rotation;
+        // Vector3 p = q.eulerAngles;
+        // if (p.z >= 63)
+        // {
+        //     return;
+        // }
+        
         // _rod.DORotate(new Vector3(0, 0, 23), rotTime).SetDelay(delayTime);
         // _rod.DOMove(new Vector3(2.41f, -0.14f, 0), rotTime).SetDelay(delayTime);
          // _rod.DORotate(new Vector3(0, 0, 0), 0.5f * rotTime);

@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 173955633}
   - component: {fileID: 173955635}
   - component: {fileID: 173955636}
+  - component: {fileID: 173955637}
   m_Layer: 0
   m_Name: rod
   m_TagString: Player
@@ -340,6 +341,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &173955637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173955632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd9e1586c5c5fb43ae8970469aca570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gamemanager: {fileID: 1357370099}
 --- !u!1 &371837452
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,9 +896,13 @@ MonoBehaviour:
   _bubble: {fileID: 3746792423181400014, guid: f5def21240d097441af0c8bc7f579fdb, type: 3}
   _display: {fileID: 371837453}
   _redBubble: {fileID: 3746792423181400014, guid: 2fe9d6e991f72004991e711055a53520, type: 3}
+  _leftArrow: {fileID: 4279283900583454201, guid: bebf337f486ed364ea28e935311827de, type: 3}
+  _goodFish: {fileID: 4603524808172063964, guid: 3a6d47f5ad109804e871ee66a7520222, type: 3}
+  _badFish: {fileID: 4603524808172063964, guid: 076dc528b8bf59d49b092a2706b33592, type: 3}
   rotTime: 2
-  delayTime: 0.5
-  angleNum: 0.1
+  delayTime: 0
+  angleNum: 0.2
+  fishDelayTime: 1
 --- !u!4 &1357370100
 Transform:
   m_ObjectHideFlags: 0
