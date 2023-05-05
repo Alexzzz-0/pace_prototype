@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private int count = 0;
     
 
-    private GameObject leftArrow;
+    //private GameObject leftArrow;
     private void Update()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
             delayTime += .5f;
             angle += .2f;
             Debug.Log(delayTime.ToString());
-            leftArrow = Instantiate(_leftArrow);
+            //leftArrow = Instantiate(_leftArrow);
         }
 
         // if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     {
         _rod.DORotate(new Vector3(0, 0, 0), 0.5f * rotTime);
         _rod.DOMove(new Vector3(3.1f, 1.61f, 0), 0.5f * rotTime);
-        Destroy(leftArrow);
+        //Destroy(leftArrow);
     }
     
     private void OnTriggerEnter2D(Collider2D col)
