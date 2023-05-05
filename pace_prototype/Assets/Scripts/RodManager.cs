@@ -9,17 +9,15 @@ using UnityEngine.Video;
 
 public class RodManager : MonoBehaviour
 {
-    //[SerializeField] private Image _rod;
-    //[SerializeField] private GameObject _rodHolder;
     [SerializeField] private GameObject _bone1;
     [SerializeField] private GameObject _bone2;
 
     [SerializeField] private GameObject _lineHolder;
-    //[SerializeField] private Image _line;
-
     [SerializeField] private GameObject _fishHolder;
     [SerializeField] private SpriteRenderer _fish;
+    
     [SerializeField] private AudioSource _reel;
+    [SerializeField] private AudioSource _knife;
     [SerializeField] private VideoPlayer _video;
 
     //[SerializeField] private GameObject _seaHolder;
@@ -27,21 +25,22 @@ public class RodManager : MonoBehaviour
     //public float preRotAngel = 5f;
     
     public float endValue = 100f;
-    private float endX = 477f;
-    private float endY = 310f;
+    //private float endX = 477f;
+    //private float endY = 310f;
 
     public float _rodTime = 2f;
     private float _initRodTime;
     public float _lineTime = 1f;
     public float _fishTime = 4f;
-    public float _changeTime = .2f;
+    private float _initFishTime;
+    //public float _changeTime = .2f;
 
     public float count = 0;
 
     private bool _canPlay = true; //if it is true, can cast the rod
     private bool _canRestart = false; //if it is true, can restart the pos
     private bool _rodCastDone = false; //use it to check if the function has finished
-    private bool _lineexpandDone = false; //same
+    //private bool _lineexpandDone = false; //same
     private bool _catchfishDone = false; //same
 
     public Vector2 fishInitial;
@@ -75,10 +74,11 @@ public class RodManager : MonoBehaviour
         
         //set everything to initial settings
         _lineHolder.transform.DOScale(new Vector3(0, 0, 0), .1f);
-        _changeTime = 0;
+        //_changeTime = 0;
         _fishHolder.transform.DOMove(fishInitial, .1f);
 
         _initRodTime = _rodTime;
+        _initFishTime = _fishTime;
         
         _reel.pitch = 5f;
         //JitterSea();
@@ -99,14 +99,16 @@ public class RodManager : MonoBehaviour
                     Debug.Log(count.ToString());
 
                     //change the time
-                    _rodTime += 1f;
+                    _rodTime = _initRodTime + count * 3f;
+                   
                     if (_fishTime > 1f)
                     {
-                        _fishTime -= 1f;
+                        _fishTime = _initFishTime - count * 1f;
                     }
 
-                    _reel.pitch -= 0.7f;
-                    Debug.Log(_rodTime.ToString() + _fishTime.ToString());
+                    _reel.pitch *= 0.5f;
+                    
+                    //Debug.Log(_rodTime.ToString() + _fishTime.ToString());
 
                     //call the function
                     PreCast();
@@ -115,10 +117,13 @@ public class RodManager : MonoBehaviour
                     
                     //count down
                     count += 1;
+                    
+                    
+                    
                 }else if (count >= 6 && count < 9)
                 {
                     //change the speed
-                    _reel.pitch += 0.1f;
+                    _reel.pitch += 1f;
                     _rodTime -= 3f;
                     glitchTime += 2f;
 
@@ -129,6 +134,8 @@ public class RodManager : MonoBehaviour
                 }else if (count == 9)
                 {
                     EndGame();
+                    //_rodTime = 4f;
+                    //_fishTime = 3.2f;
                 }
             }
             
@@ -211,6 +218,8 @@ public class RodManager : MonoBehaviour
 
         _bone1.transform.DORotate(new Vector3(0, 0, 113f), 1f).OnComplete(() =>
         {
+            _reel.Pause();
+            _knife.Play();
             Invoke("GlitchBone",glitchTime);
         });
         
@@ -219,6 +228,8 @@ public class RodManager : MonoBehaviour
 
     void GlitchBone()
     {
+        _knife.Stop();
+        _reel.Play();
         _bone1.transform.DORotate(new Vector3(0, 0, RotAngel),0.1f);
         _bone2.transform.DOScale(new Vector3(xScale, 1f, 1f), 0.1f).OnComplete(() =>
         {
@@ -276,16 +287,14 @@ public class RodManager : MonoBehaviour
         _fishHolder.transform.DOMoveY(endValue, _fishTime).OnComplete(() =>
         {
             _catchfishDone = true;
+            if (count <= 4)
+            {
+                _reel.pitch *= 0.5f;
+            }
         });
         
-        _video.Play();
-        Invoke("PauseVideo",_fishTime);
     }
 
-    void PauseVideo()
-    {
-        _video.Pause();
-    }
     
     // void JitterSea()
     // {
@@ -323,12 +332,15 @@ public class RodManager : MonoBehaviour
         //_lineexpandDone = false;
         _catchfishDone = false;
         
-        //TODO: replace them with DORestart method;
-        // _rodHolder.transform.DORestart();
-        // _lineHolder.transform.DORestart();
-        // _fishHolder.transform.DORestart();
+        _video.Play();
         
         //the animation of ting everything to the initial settings
+
+        if (count <= 4)
+        {
+            _reel.pitch *= 2f;
+        }
+        
         _fish.DOFade(0, .1f).OnComplete(() =>
         {
             _fishHolder.transform.DOMove(fishInitial, .5f).OnComplete(() =>
@@ -336,6 +348,7 @@ public class RodManager : MonoBehaviour
                 _fish.DOFade(1, 1f).OnComplete(() =>
                 {
                     _canPlay = true;
+                    _video.Pause();
                 });
             });
         });
@@ -376,6 +389,6 @@ public class RodManager : MonoBehaviour
 
     void End()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 }
